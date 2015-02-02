@@ -17,7 +17,8 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>senpai-service</servlet-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/api/*</url-pattern>
   </servlet-mapping>
+  
   
 </web-app>
