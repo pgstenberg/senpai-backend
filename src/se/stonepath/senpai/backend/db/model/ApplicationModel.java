@@ -15,12 +15,16 @@ public class ApplicationModel {
 	private String requester;
 	
 	@DatabaseField
+	private String application;
+	
+	@DatabaseField
 	private int timestamp;
 	
 	
-	public ApplicationModel(String appCode,String requester) {
+	public ApplicationModel(String appCode,String application,String requester) {
 		this.requester = requester;
 		this.appCode = appCode;
+		this.application = application;
 		this.timestamp = (int)(System.currentTimeMillis() / 1000L);
 	}
 	

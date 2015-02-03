@@ -25,7 +25,7 @@ import se.stonepath.senpai.skeleton.LogSkeleton;
 public class LogService {
 
 	
-	@Path("/insert")
+	@Path("/add")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
@@ -47,7 +47,7 @@ public class LogService {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Path("/get")
+	@Path("/list")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String get(@QueryParam("offset") long offset,@QueryParam("limit") long limit, 
