@@ -11,8 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import org.glassfish.hk2.utilities.reflection.Logger;
-
 import com.google.gson.Gson;
 
 import se.stonepath.senpai.backend.db.DatabaseHandler;
@@ -53,7 +51,6 @@ public class ApplicationService {
 			return appCode;
 			
 			} catch (Exception e) {
-				Logger.printThrowable(e);
 				throw new BadRequestException(e);
 			}
 	
@@ -74,7 +71,6 @@ public class ApplicationService {
 			return new Gson().toJson(applicationModel);
 			
 		} catch (Exception e) {
-			Logger.printThrowable(e);
 			throw new BadRequestException(e);
 		}
 	}
@@ -94,7 +90,6 @@ public class ApplicationService {
 			return new Gson().toJson(applications);
 			
 		} catch (Exception e) {
-			Logger.printThrowable(e);
 			throw new BadRequestException(e);
 		}
 	}
