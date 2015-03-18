@@ -1,6 +1,6 @@
 <project name="Senpai Backend" default="war" basedir=".">
 
-    <property name="war.file" value="senpai-backend"/>
+    <property name="war.file" value="stonepath-senpai-backend"/>
     <property name="dist.dir" value="dist"/>
     
 	<path id="compile.classpath">
