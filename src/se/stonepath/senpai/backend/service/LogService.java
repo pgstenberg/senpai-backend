@@ -11,11 +11,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Level;
+
 import com.google.gson.Gson;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
 import se.stonepath.senpai.backend.db.DatabaseHandler;
+import se.stonepath.senpai.backend.db.model.ApplicationModel;
 import se.stonepath.senpai.backend.db.model.LogModel;
 import se.stonepath.senpai.skeleton.LogSkeleton;
 
@@ -35,7 +39,9 @@ public class LogService {
 		
 		try {
 			DatabaseHandler dbHandler = new DatabaseHandler();
-			dbHandler.getLogModelDao().create(new LogModel(log));
+			ApplicationModel applicationModel = dbHandler.getApplicationModelDao().queryForId(log.getAppCode());
+			
+			dbHandler.getLogModelDao().create(new LogModel(log.getMessage(),applicationModel,log.getLogger(),log.getHost(), log.getLevel(),log.getTimestamp()));
 			dbHandler.close();
 		} catch (Exception e) {
 			return e.getMessage();
@@ -45,6 +51,31 @@ public class LogService {
 		return "1";
 		
 	}
+	
+
+	@Path("/clear")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public String clear(@QueryParam("to") long toStamp){
+		
+		Integer recordsDeleted = 0;
+		
+		try {
+			DatabaseHandler dbHandler = new DatabaseHandler();
+			DeleteBuilder<LogModel, Integer> deleteBuilder = dbHandler.getLogModelDao().deleteBuilder();
+			deleteBuilder.where().le("stamp", toStamp);
+			recordsDeleted = deleteBuilder.delete();
+			
+			dbHandler.close();
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+		return recordsDeleted.toString();
+		
+		
+	}
+	
+	
 	
 	@SuppressWarnings("unchecked")
 	@Path("/list")
@@ -68,21 +99,21 @@ public class LogService {
 			}else if(limit != 0){
 				queryBuilder = queryBuilder.limit(limit);
 			}
-			queryBuilder = queryBuilder.orderBy("stamp",true);
+			queryBuilder = queryBuilder.orderBy("stamp",false);
 			
 			//Initial query
-			Where<LogModel,Integer> whereStatement = queryBuilder.where().isNotNull("appCode");
+			Where<LogModel,Integer> whereStatement = queryBuilder.where().isNotNull("application_id");
 			
 			//AppCode filter
 			if(appCode != null){
-				whereStatement = whereStatement.and().eq("appCode", appCode);
+				whereStatement = whereStatement.and().eq("application_id", appCode);
 			}
 			//Level filter
 			if(level.size() > 0){
 				Where<LogModel,Integer> levelWhere = whereStatement;	
-				levelWhere.eq("level", LogSkeleton.Level.valueOf(level.get(0)));
+				levelWhere.eq("level", Level.toLevel(level.get(0)));
 				for(int i = 1 ; i < level.size();i++){
-					levelWhere.or().eq("level", LogSkeleton.Level.valueOf(level.get(i)));
+					levelWhere.or().eq("level", Level.toLevel(level.get(i)));
 				}
 				whereStatement = whereStatement.and(whereStatement, levelWhere);
 			}

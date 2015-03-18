@@ -1,20 +1,20 @@
 package se.stonepath.senpai.backend.db;
 
 
+import java.io.File;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.SQLException;
 
 import se.stonepath.senpai.backend.db.model.ApplicationModel;
-import se.stonepath.senpai.backend.db.model.DelegateModel;
 import se.stonepath.senpai.backend.db.model.LogModel;
+import se.stonepath.senpai.backend.db.model.RemoteModel;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-
 
 public class DatabaseHandler {
 
@@ -24,17 +24,22 @@ public class DatabaseHandler {
 	
 	private Dao<LogModel,Integer> logModelDao;
 	private Dao<ApplicationModel,String> applicationModelDao;
-	private Dao<DelegateModel,String> delegateModelDao;
+	private Dao<RemoteModel,String> remoteModelDao;
 	
-	
-	public DatabaseHandler() throws ClassNotFoundException, SQLException{
+	public DatabaseHandler() throws Exception{
 		Class.forName("org.sqlite.JDBC");
 		
 		dbConnection = new JdbcConnectionSource("jdbc:sqlite:" + DATABASE_INSTANCE);
+		
+		if(!new File(DATABASE_INSTANCE).exists())
+			installDatabase();
+			
+		
 	
 		logModelDao = DaoManager.createDao(dbConnection, LogModel.class);
 		applicationModelDao = DaoManager.createDao(dbConnection, ApplicationModel.class);
-		delegateModelDao = DaoManager.createDao(dbConnection, DelegateModel.class);
+		remoteModelDao = DaoManager.createDao(dbConnection, RemoteModel.class);
+		
 	}
 	
 	public void close() throws SQLException{
@@ -42,10 +47,10 @@ public class DatabaseHandler {
 	}
 	
 	
-	public void installDatabase() throws SQLException{
+	private void installDatabase() throws Exception{
 		TableUtils.createTable(dbConnection, LogModel.class);
 		TableUtils.createTable(dbConnection, ApplicationModel.class);
-		TableUtils.createTable(dbConnection, DelegateModel.class);
+		TableUtils.createTable(dbConnection, RemoteModel.class);
 		
 	}
 	
@@ -56,12 +61,13 @@ public class DatabaseHandler {
 	public Dao<ApplicationModel,String> getApplicationModelDao(){
 		return applicationModelDao;
 	}
-	public Dao<DelegateModel,String> getDelegateModelDao(){
-		return delegateModelDao;
+	public Dao<RemoteModel,String> getRemoteModelDao(){
+		return remoteModelDao;
 	}
 	
+	
 	public static String generateUniqueID(Dao<?, String> dao) throws SQLException{
-		HashGenerator appCodeGenerator = new HashGenerator();
+		RandomHashGenerator appCodeGenerator = new RandomHashGenerator();
 		
 		String appCode = appCodeGenerator.generateHash();
 		
@@ -72,7 +78,8 @@ public class DatabaseHandler {
 		return appCode;
 	}
 	
-	private static class HashGenerator {
+	
+	private static class RandomHashGenerator {
 		  private SecureRandom random = new SecureRandom();
 	  
 		  public String generateHash() {

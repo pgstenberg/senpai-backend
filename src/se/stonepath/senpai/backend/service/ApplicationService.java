@@ -1,25 +1,26 @@
 package se.stonepath.senpai.backend.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
+import org.glassfish.hk2.utilities.reflection.Logger;
 
 import com.google.gson.Gson;
 
 import se.stonepath.senpai.backend.db.DatabaseHandler;
 import se.stonepath.senpai.backend.db.model.ApplicationModel;
+import se.stonepath.senpai.backend.json.model.ApplicationJsonModel;
 
 
-@Path("/app")
+@Path("/application")
 public class ApplicationService {
 
 	
@@ -27,31 +28,64 @@ public class ApplicationService {
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String registrate(@QueryParam("application") String application,@Context HttpServletRequest request){			
+	public String registrate(String jsonData){			
 		
-		try {
+			try {
+			
+			if(jsonData == null)
+					throw new NullPointerException("jsondata empty!");
+				
 			DatabaseHandler dbHandler = new DatabaseHandler();
-			String remoteIp = request.getRemoteAddr();
+			
 			String appCode = DatabaseHandler.generateUniqueID(dbHandler.getApplicationModelDao());
-			ApplicationModel applicationModel = new ApplicationModel(appCode,application,remoteIp);
+			ApplicationJsonModel applicationJsonModel = new Gson().fromJson(jsonData, ApplicationJsonModel.class);
+			
+			if(applicationJsonModel == null)
+				throw new NullPointerException("Unable to parse required json data");
+			
+			
+			
+			ApplicationModel applicationModel = new ApplicationModel(appCode,applicationJsonModel.getApplicationName());
 			
 			dbHandler.getApplicationModelDao().create(applicationModel);
 			dbHandler.close();
 			
 			return appCode;
 			
-		} catch (SQLException | ClassNotFoundException e) {
-			return e.getMessage();
-		}
+			} catch (Exception e) {
+				Logger.printThrowable(e);
+				throw new BadRequestException(e);
+			}
+	
 		
 	}
 	
-	@Path("/list")
+	@Path("/get")
 	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public String get(@QueryParam("app") String appCode){
+		try {
+			DatabaseHandler dbHandler = new DatabaseHandler();
+			
+			ApplicationModel applicationModel = dbHandler.getApplicationModelDao().queryForId(appCode);
+			
+			dbHandler.close();
+			
+			return new Gson().toJson(applicationModel);
+			
+		} catch (Exception e) {
+			Logger.printThrowable(e);
+			throw new BadRequestException(e);
+		}
+	}
+	
+	@GET
+	@Path("/list")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String list(){
 		try {
 			DatabaseHandler dbHandler = new DatabaseHandler();
+			
 			
 			List<ApplicationModel> applications = dbHandler.getApplicationModelDao().queryForAll();
 			
@@ -59,10 +93,13 @@ public class ApplicationService {
 			
 			return new Gson().toJson(applications);
 			
-		} catch (SQLException | ClassNotFoundException e) {
-			return e.getMessage();
+		} catch (Exception e) {
+			Logger.printThrowable(e);
+			throw new BadRequestException(e);
 		}
 	}
+	
+	
 	
 	
 	

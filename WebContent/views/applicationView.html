@@ -1,0 +1,58 @@
+
+
+	
+<div class="row">
+<div class="col-md-10 col-md-offset-1">
+	
+	<div class="row">
+	<div class="jumbotron">
+  		<h1 class="h1"> {{ application.applicationName }}</h1>
+	</div>
+	</div>
+	
+	<div class="row">
+	
+	<div class="panel panel-default">
+  	<div class="panel-heading">
+    	<h3 class="panel-title fa fa-terminal"> Terminal</h3>
+  	</div>
+  	
+  	<div class="application-log-content panel-body">
+    	<span class="application-log-entry" ng-repeat="log in logs"><span class="white">[{{log.level}}]</span> {{log.stamp * 1000| date:'yyyy-MM-dd HH:mm:ss'}} : <span class="yellow">{{log.message}}</span></span> 
+  	</div>
+
+    </div>
+    
+    <div class="panel panel-default">
+	
+  	<div class="panel-heading">
+    	<h3 class="panel-title fa fa-globe"> Remote Method Invocation</h3>
+  	</div>
+  	
+  	<div class="panel-body">
+  	   <div class="form-group">
+  	   <div class="input-group col-md-2">
+   			<select class="form-control" ng-model="remote" data-ng-options="remote.rmiInterface group by remote.rmiUrl for remote in remotes" ng-change="loadRemoteMethods()"></select>
+   		</div>
+   		<div class="input-group col-md-2">
+   			<select class="form-control" ng-model="remote.method" data-ng-options="method.methodName for method in remote.methods"></select>
+   			<input class="form-control" placeholder="{{ param.parameterName }} ({{ param.classType }})" ng-model="param.value" ng-repeat="param in remote.method.parameters">
+   		</div>
+    	<div class="input-group col-md-8">	  	
+    	
+      		<!--<input class="form-control" id="method" placeholder="method" ng-model="method">-->
+      		<span class="input-group-btn"><button type="submit" class="btn btn-primary" ng-click="postMethod()" ng-disabled="methodButtonDisabled">Execute</button></span>
+    	</div>
+    	
+  		</div>
+  	</div> 
+  	</div>
+  	
+  	</div>
+    
+
+    </div>
+    
+</div>
+
+

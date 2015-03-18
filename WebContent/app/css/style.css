@@ -1,0 +1,30 @@
+.application-log-content
+{
+	background-color:#000;
+	height:400px;
+	font-size:18px;
+	font-family: 'Terminal Dosis';
+	font-weight: bold;
+	letter-spacing: 2px;
+}
+.application-log-entry
+{
+	color:#797979;
+	float:left;
+	display:block;
+	width:100%;
+}
+.application-log-entry .yellow
+{
+	color:#00FD7F;
+}
+.application-log-entry .white
+{
+	color:#DFDFDF;
+}
+
+.grid-logs
+{
+	height:600px;
+	
+}

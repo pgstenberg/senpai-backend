@@ -4,32 +4,27 @@ package se.stonepath.senpai.backend.db.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "apps")
+@DatabaseTable(tableName = "applications")
 public class ApplicationModel {
 
 	
 	@DatabaseField(id=true)
-	private String appCode;
+	private String application_id;
 	
 	@DatabaseField
-	private String requester;
-	
-	@DatabaseField
-	private String application;
-	
-	@DatabaseField
-	private int timestamp;
-	
-	
-	public ApplicationModel(String appCode,String application,String requester) {
-		this.requester = requester;
-		this.appCode = appCode;
-		this.application = application;
-		this.timestamp = (int)(System.currentTimeMillis() / 1000L);
-	}
+	private String applicationName;
 	
 	public ApplicationModel(){
 		
 	}
+	public ApplicationModel(String applicationCode,String applicationName) {
+		this.application_id = applicationCode;
+		this.applicationName = applicationName;
+	}
+
+	public String getApplicationName() {
+		return applicationName;
+	}
+	
 	
 }

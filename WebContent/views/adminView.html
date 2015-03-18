@@ -1,0 +1,67 @@
+<div class="row">
+<div class="col-md-10 col-md-offset-1">
+
+	<div class="row">
+	
+	<div class="jumbotron">
+  		<h1 class="h1 fa fa-cogs"> Administration</h1>
+	</div>
+	
+	</div>
+
+
+<div class="row">
+		
+	<div class="col-md-6">
+	
+	<div class="panel panel-default">
+  	<div class="panel-heading">
+    	<h3 class="panel-title fa fa-list"> Logs</h3>
+  	</div>
+  	
+  	<div class="panel-body">
+  	
+  	<div class="form-group">
+    	 <span>Clear logs to given date:</span>
+    	 <div class="input-group">
+  	   <input type="date" class="form-control" ng-model="logs.clearTo"
+       placeholder="yyyy-MM-dd" required />
+       <span class="input-group-btn"><button type="submit" class="btn btn-primary" ng-click="clearLogs()">Clear</button></span>
+       </div>
+  	  </div>
+  	  
+  	</div>
+  	
+  	</div>
+  	</div>
+  	
+  	
+  	<div class="col-md-6">
+	
+	<div class="panel panel-default">
+  	<div class="panel-heading">
+    	<h3 class="panel-title fa fa-plus-square"> Add application</h3>
+  	</div>
+  	
+  	<div class="panel-body">
+  	
+  	<div class="form-group">
+    	 <span>Application name:</span>
+    	 <div class="input-group">
+  	   <input type="text" class="form-control" ng-model="add.application"
+       placeholder="Application Name" required />
+       <span class="input-group-btn"><button type="submit" class="btn btn-primary" ng-click="addApp()">Add</button></span>
+       </div>
+  	  </div>
+  	  
+  	</div>
+  	
+  	</div>
+  	</div>
+  	
+		
+</div>
+
+
+</div>
+</div>
