@@ -4,3 +4,6 @@
 .classpath
 .project
 /build
+/dist
+WebContent/WEB-INF/lib/stonepath-senpai-framework.jar
+WebContent/WEB-INF/lib/test*.jar
