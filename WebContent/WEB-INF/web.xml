@@ -6,7 +6,7 @@
   </welcome-file-list>
   <servlet>
     <servlet-name>senpai-service</servlet-name>
-    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>jersey.config.server.provider.packages</param-name>
       <param-value>se.stonepath.senpai.backend</param-value>
