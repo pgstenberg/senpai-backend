@@ -56,12 +56,21 @@ public class LogService {
 	@Path("/clear")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String clear(@QueryParam("to") long toStamp){
+	public String clear(@QueryParam("to") long toStamp,@QueryParam("max") long maxSize){
 		
 		Integer recordsDeleted = 0;
 		
 		try {
 			DatabaseHandler dbHandler = new DatabaseHandler();
+			
+			if(toStamp == 0 && maxSize != 0){
+				QueryBuilder<LogModel,Integer> queryBuilder = dbHandler.getLogModelDao().queryBuilder();
+				queryBuilder.offset(maxSize).limit((long)1).orderBy("stamp",false);
+				List<LogModel> logModels = queryBuilder.query();
+				if(!logModels.isEmpty())
+					toStamp = queryBuilder.query().get(0).getStamp();
+			}
+			
 			DeleteBuilder<LogModel, Integer> deleteBuilder = dbHandler.getLogModelDao().deleteBuilder();
 			deleteBuilder.where().le("stamp", toStamp);
 			recordsDeleted = deleteBuilder.delete();

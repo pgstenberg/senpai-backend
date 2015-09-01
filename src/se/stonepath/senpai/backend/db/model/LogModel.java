@@ -39,4 +39,8 @@ public class LogModel{
 	public LogModel() {
 	}
 	
+	public long getStamp(){
+		return stamp;
+	}
+	
 }
