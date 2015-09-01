@@ -8,15 +8,15 @@ var appConfig = function($routeProvider) {
 				templateUrl : 'views/applicationView.html',
 				controller  : 'ApplicationController'
 			})
-			.when('/logs', {
-				templateUrl : 'views/logsView.html',
-				controller  : 'LogsController'
+			.when('/home', {
+				templateUrl : 'views/homeView.html',
+				controller  : 'HomeController'
 			})
 			.when('/admin', {
 				templateUrl : 'views/adminView.html',
 				controller  : 'AdminController'
 			})
-			.otherwise({ redirectTo: '/logs' });
+			.otherwise({ redirectTo: '/home' });
 		
 		
 };

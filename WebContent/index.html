@@ -24,8 +24,7 @@
 <script src="app/js/ui-grid-unstable.js"></script>
 	
   
-  <script src="app/controllers/navbarController.js"></script>
-  <script src="app/controllers/logsController.js"></script>
+  <script src="app/controllers/homeController.js"></script>
   <script src="app/controllers/applicationController.js"></script>
    <script src="app/controllers/adminController.js"></script>
   <script src="app/config.js"></script>
@@ -34,25 +33,12 @@
 </head>
 
 <!-- define angular controller -->
-<body ng-controller="NavbarController">
+<body>
   <nav class="navbar navbar-default">
     <div class="container">
 
-  <span class="navbar-brand">Senpai v.ALPHA</span>
-
+  <a class="navbar-brand" href="#/home">Senpai</a>
       <ul class="nav navbar-nav navbar-right">     
-      
-      
-      
-        <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle fa fa-tachometer" href=""> Applications <b class="caret"></b></a>
-                        <ul class="dropdown-menu" >
-                            <li ng-repeat="application in applications"><a href="#/application/{{ application.application_id }}">{{ application.applicationName }}</a></li>
-                        </ul>
-                    </li>
-        
-        
-        <li><a href="#logs"><i class="fa fa-list"></i> Logs</a></li>
         <li><a href="#admin"><i class="fa fa-cogs"></i> Administration</a></li>
       </ul>
     </div>

@@ -29,7 +29,9 @@ var applicationController = function($rootScope, $scope, $http, $routeParams,$in
 	    success(function(data) {
 	    	$scope.remotes = data;
 	    	$scope.remote = $scope.remotes[0];
-	    	$scope.loadRemoteMethods();
+	    	if (typeof $scope.remote != "undefined") {
+	    		$scope.loadRemoteMethods();
+	    	}
 	    });}; 
 	
 	    $scope.loadRemoteMethods = function () { $http.get('api/remote/method/list?rmi='+$scope.remote.remote_id).

@@ -2,8 +2,7 @@
 var senpaiApp = angular.module('senpaiApp', ['ngRoute', 'ui.grid', 'ui.grid.pagination']);
 
 senpaiApp.controller("ApplicationController", applicationController);
-senpaiApp.controller("NavbarController", navbarController);
-senpaiApp.controller("LogsController", logsController);
+senpaiApp.controller("HomeController", homeController);
 senpaiApp.controller("AdminController", adminController);
 
 senpaiApp.config(appConfig);
